@@ -1,0 +1,284 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+variable "app_name" {
+  type    = string
+  default = "service-metabase"
+}
+
+variable "app_env" {
+  type = string
+}
+variable "cluster_arn" {
+  type = string
+}
+variable "image" {
+  type = string
+}
+
+variable "task_size_cpu" {
+  type    = number
+  default = 1024
+}
+
+variable "task_size_memory" {
+  type    = number
+  default = 2048
+}
+
+variable "instance_count_min" {
+  type    = number
+  default = 2
+}
+
+variable "instance_count_max" {
+  type    = number
+  default = 256
+}
+
+
+
+variable "db" {
+  type = object({
+    endpoint = string
+    name     = string
+    credentials = object({
+      arn = string
+    })
+  })
+}
+
+
+
+variable "role" {
+  type = object({
+    arn = string
+  })
+}
+
+variable "network_configuration" {
+  type = object({
+    region = string
+    vpc = object({
+      id = string
+    })
+    subnets         = list(string),
+    security_groups = list(string),
+    load_balancer_target_groups = list(object({
+      arn  = string,
+      port = number
+    }))
+  })
+}
+
+variable "env" {
+  type    = map(string)
+  default = {}
+}
+
+resource "aws_cloudwatch_log_group" "this" {
+  name = "${var.app_env}-${var.app_name}"
+
+  tags = {
+    Environment = "${var.app_env}"
+  }
+}
+
+module "container_definition" {
+  source = "../task-definition"
+
+  name = var.app_name
+
+  essential = true
+
+  cpu = 0
+  # memory = 0
+  image = var.image
+  port_mappings = [{
+    name          = var.app_name
+    appProtocol   = "http"
+    containerPort = 3000
+  }]
+
+  environment = [for name, value in merge({
+    "MB_DB_TYPE" : "postgres",
+    "MB_DB_DBNAME" : "${var.db.name}",
+    "MB_DB_PORT" : "5432",
+    "MB_DB_CONNECTION_TIMEOUT_MS" : "600000"
+    "MB_DB_HOST" : "${var.db.endpoint}"
+    }, var.env) : {
+    name  = name
+    value = value
+  }]
+  secrets = [{
+    name      = "MB_DB_USER",
+    valueFrom = "${var.db.credentials.arn}:MB_DB_USER::"
+    },
+    {
+      name      = "MB_DB_PASS",
+      valueFrom = "${var.db.credentials.arn}:MB_DB_PASS::"
+    }
+
+  ]
+  memory_reservation          = 100
+  create_cloudwatch_log_group = false
+  enable_cloudwatch_logging   = false
+  log_configuration = {
+    logDriver = "awslogs"
+    options = {
+      awslogs-group   = aws_cloudwatch_log_group.this.name
+      awslogs-region  = var.network_configuration.region
+      mode            = "non-blocking"
+      max-buffer-size = "1m"
+    }
+  }
+  health_check = {
+    command  = ["CMD-SHELL", "exit 0"]
+    interval = 30
+    retries  = 3
+    timeout  = 5
+  }
+
+
+  # Example image used requires access to write to root filesystem
+  readonly_root_filesystem = false
+
+}
+
+module "ecs_svc" {
+  source = "../ecs-service-new"
+  # version = "v5.11.2"
+
+  name = var.app_name
+
+  family = "${var.app_env}-${var.app_name}"
+
+  container_definition_defaults = {
+    cloudwatch_log_group_retention_in_days = 7
+    cloudwatch_log_group_name              = aws_cloudwatch_log_group.this.name
+    create_cloudwatch_log_group            = false
+    enable_cloudwatch_logging              = true
+    log_configuration = {
+      logDriver = "awslogs"
+      options = {
+        awslogs-group         = aws_cloudwatch_log_group.this.name
+        awslogs-region        = var.network_configuration.region
+        awslogs-stream-prefix = "ecs"
+        mode                  = "non-blocking"
+        max-buffer-size       = "1m"
+      }
+    }
+  }
+
+  container_definitions = {
+    (var.app_name) = module.container_definition.container_definition
+  }
+  cluster_arn      = var.cluster_arn
+  launch_type      = "FARGATE"
+  platform_version = "LATEST"
+
+  create_task_exec_iam_role = false
+  # create_task_definition = false
+  cpu                                = var.task_size_cpu
+  memory                             = var.task_size_memory
+  enable_execute_command             = true
+  desired_count                      = 1
+  health_check_grace_period_seconds  = 30
+  create_tasks_iam_role              = false
+  task_exec_iam_role_arn             = var.role.arn
+  tasks_iam_role_arn                 = var.role.arn
+  iam_role_arn                       = var.role.arn
+  subnet_ids                         = var.network_configuration.subnets
+  create_security_group              = false
+  security_group_ids                 = var.network_configuration.security_groups
+  network_mode                       = "awsvpc"
+  assign_public_ip                   = false
+  ignore_task_definition_changes     = false
+  deployment_minimum_healthy_percent = 100
+  deployment_maximum_percent         = 200
+  deployment_controller = {
+    type = "ECS"
+  }
+  runtime_platform = {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+
+  # service_connect_configuration = {
+  #   namespace = var.app_env
+
+  #   service = {
+  #     client_alias = {
+  #       port     = 80
+  #       dns_name = var.app_name
+  #     }
+  #     port_name      = var.app_name
+  #     discovery_name = var.app_name
+  #   }
+  # }
+
+  service_connect_configuration = {
+    "config1" = {
+      namespace = var.app_env
+      services = [
+        {
+          client_alias = [
+            {
+              port     = 80
+              dns_name = "${var.app_name}"
+            }
+          ]
+          port_name      = "${var.app_name}"
+          discovery_name = "${var.app_name}"
+          timeout = {
+            idle_timeout_seconds        = 600000
+            per_request_timeout_seconds = 600000
+          }
+        }
+      ]
+    }
+  }
+
+  load_balancer = {
+    for idx, lb in var.network_configuration.load_balancer_target_groups : idx => {
+      target_group_arn = lb.arn
+      container_name   = var.app_name
+      container_port   = lb.port
+    }
+  }
+
+  enable_autoscaling       = false
+  autoscaling_min_capacity = var.instance_count_min
+  autoscaling_max_capacity = var.instance_count_max
+  autoscaling_policies = {
+    cpu = {
+      policy_type = "TargetTrackingScaling"
+
+      target_tracking_scaling_policy_configuration = {
+        predefined_metric_specification = {
+          predefined_metric_type = "ECSServiceAverageCPUUtilization"
+        }
+        target_value = 80
+      }
+    }
+    memory = {
+      policy_type = "TargetTrackingScaling"
+
+      target_tracking_scaling_policy_configuration = {
+        predefined_metric_specification = {
+          predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+          target_value           = 80
+        }
+        target_value = 80
+      }
+    }
+  }
+
+
+}

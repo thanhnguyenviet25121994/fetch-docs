@@ -1,0 +1,67 @@
+module "valkey_serverless" {
+  source  = "terraform-aws-modules/elasticache/aws//modules/serverless-cache"
+  version = "v1.2.4"
+
+  engine     = "valkey"
+  cache_name = "${local.environment}-valkey"
+
+  cache_usage_limits = {
+    data_storage = {
+      maximum = 2
+    }
+    ecpu_per_second = {
+      maximum = 1000000
+    }
+  }
+
+  daily_snapshot_time  = "22:00"
+  description          = "${local.environment} valkey serverless cluster"
+  major_engine_version = "8"
+  security_group_ids = [
+    module.prod_networking.vpc.default_security_group_id,
+    "sg-030fe80578ee8e475"
+  ]
+
+  snapshot_retention_limit = 7
+  subnet_ids = [
+    module.prod_networking.subnet_private_1.id,
+    module.prod_networking.subnet_private_2.id
+  ]
+
+  #   user_group_id = module.cache_user_group.group_id
+}
+
+
+
+module "valkey_serverless_casual" {
+  source  = "terraform-aws-modules/elasticache/aws//modules/serverless-cache"
+  version = "v1.2.4"
+
+  engine     = "valkey"
+  cache_name = "${local.environment}-valkey-casual"
+
+  cache_usage_limits = {
+    data_storage = {
+      maximum = 2
+    }
+    ecpu_per_second = {
+      maximum = 1000000
+    }
+  }
+
+  daily_snapshot_time  = "22:00"
+  description          = "${local.environment} valkey serverless cluster"
+  major_engine_version = "8"
+  security_group_ids = [
+    module.prod_networking.vpc.default_security_group_id,
+    "sg-030fe80578ee8e475"
+  ]
+
+  snapshot_retention_limit = 7
+  subnet_ids = [
+    module.prod_networking.subnet_private_1.id,
+    module.prod_networking.subnet_private_2.id
+  ]
+
+  #   user_group_id = module.cache_user_group.group_id
+}

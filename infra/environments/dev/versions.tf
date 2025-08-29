@@ -1,0 +1,16 @@
+locals {
+  operator_demo_version                   = "v1.0.59.1"
+  service_entity_version                  = "v1.0.286.1"
+  service_game_client_version             = "v1.0.1582.1"
+  service_game_logic_version              = "v1.0.58.1"
+  logic_fortune_dragon_version            = "v1.0.97.1"
+  logic_fortune_ox_version                = "v1.0.25.1"
+  logic_wild_west_saloon_version          = "v1.0.22.1"
+  logic_fortune_mouse_version             = "v1.0.22.1"
+  portal_replay_version                   = "v1.0.3.1"
+  logic_fortune_tiger_version             = "v1.0.95.1"
+  logic_queen_of_aztec_version            = "v1.0.34.1"
+  logic_treasure_of_aztec_version         = "v1.0.34.1"
+  logic_dragon_hatch_version              = "v1.0.15.1"
+  logic_treasures_of_aztec_rewind_version = "v1.0.15.1"
+}

@@ -1,0 +1,8 @@
+- name: Setup Pritunl VPN Server
+  hosts: localhost
+  become: yes
+  become_user: root
+  roles:
+    - role: vpn
+  tags:
+    - pritunl

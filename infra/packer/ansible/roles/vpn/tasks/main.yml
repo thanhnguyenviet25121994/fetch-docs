@@ -1,0 +1,46 @@
+---
+# tasks file for pritunl
+- name: Add pritunl apt repository\
+  shell:
+    cmd: echo "deb http://repo.pritunl.com/stable/apt focal main" | sudo tee -a /etc/apt/sources.list.d/pritunl.list
+
+  # apt_repository:
+  #   repo: deb http://repo.pritunl.com/stable/apt focal main
+  #   filename: "pritunl"
+  #   state: present
+
+- name: Add Apt Keys
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "7568D9BB55FF9E5287D586017AE645C0CF8E292A"
+
+- name: Add mongodb apt repository
+  shell:
+    cmd: echo "deb https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee -a /etc/apt/sources.list.d/mongodb-org-5.0.list
+  # apt_repository:
+  #   repo: deb https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse
+  #   filename: "mongodb-org-5.0.list"
+  #   state: present
+
+- name: Add mongodb key
+  shell:    
+    cmd: wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
+
+- name: Update system OS
+  apt: update_cache=yes
+
+- name: Upgrade system OS
+  apt: upgrade=yes
+
+- name: Install wireguard wireguard-tools
+  raw: apt -y install wireguard wireguard-tools
+
+- name: Install pritunl and mongodb
+  raw: apt -y install pritunl mongodb-org
+
+- name: Enable pritunl and mongodb
+  raw: systemctl enable mongod pritunl
+
+- name: Start pritunl
+  raw: systemctl start mongod pritunl
+  notify: start pritunl

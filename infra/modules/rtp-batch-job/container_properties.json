@@ -1,0 +1,30 @@
+{
+    "image": "${image}",
+    "executionRoleArn": "${execution_role}",
+    "jobRoleArn": "${job_role}",
+    "fargatePlatformConfiguration" : {
+      "platformVersion" : "LATEST"
+    },
+    "resourceRequirements" : [
+      { "type" : "VCPU", "value" : "${vcpu}" },
+      { "type" : "MEMORY", "value" : "${memory}" }
+    ],
+    "runtimePlatform": { 
+      "cpuArchitecture": "ARM64",
+      "operatingSystemFamily": "LINUX"
+   },
+    "environment": [
+    ],
+    "networkConfiguration": {
+      "assignPublicIp": "ENABLED"
+    },
+    "command": ["sleep", "1000"],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-create-group": "true",
+        "awslogs-group": "${log_group_name}",
+        "awslogs-region": "${log_group_region}"
+      }
+    }
+}

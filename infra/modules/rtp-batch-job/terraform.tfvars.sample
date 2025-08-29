@@ -1,0 +1,25 @@
+main_region         = "ap-northeast-1"
+app_name            = "moove"
+prefix              = "dev"
+tenant_name         = "ana"
+
+batch_configs = {
+  name            = "lottery-batch"
+  repository_name = "archetype-digital/lottery-batch"
+  type            = "FARGATE_SPOT"
+  max_vcpus       = "2"
+  vcpu            = ".25"
+  memory          = "512"
+
+  db_configs = {
+    dbname = "dev-ana-moove-master-db"
+    dbhost = "dev-ana-moove-master-db.cpgzhfqr1nz6.ap-northeast-1.rds.amazonaws.com"
+    dbname = "moove_dev"
+    dbuser = "cdo"
+    dbpass = "TheScret2022"
+  }
+
+  timeout_attempt_duration_seconds = 3600
+  maximum_event_age_in_seconds     = 60
+  maximum_retry_attempts           = 3
+}

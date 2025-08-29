@@ -1,0 +1,66 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowExecuteCommand",
+      "Effect": "Allow",
+      "Action": [
+          "ecs:ExecuteCommand"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "AllowSSMMessages",
+      "Effect": "Allow",
+      "Action": [
+          "ssmmessages:CreateControlChannel",
+          "ssmmessages:CreateDataChannel",
+          "ssmmessages:OpenControlChannel",
+          "ssmmessages:OpenDataChannel"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
+      "Sid": "Allow2PushLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogStreams",
+        "cloudwatch:BatchGet*",
+        "cloudwatch:Describe*",
+        "cloudwatch:GenerateQuery",
+        "cloudwatch:Get*",
+        "cloudwatch:List*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "GetSecret",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    },
+    {   
+        "Sid": "AllowS3Openreplay",
+        "Effect": "Allow",
+        "Action": [
+            "s3:PutObject",
+            "s3:GetObjectAcl",
+            "s3:GetObject",
+            "s3:GetObjectTagging",
+            "s3:ListBucket",
+            "s3:PutObjectTagging",
+            "s3:GetBucketLocation"
+        ],
+        "Resource": ${s3_resources}
+    }
+  ]
+}

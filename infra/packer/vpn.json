@@ -1,0 +1,31 @@
+{
+  "_comment": "Hashicorp Packer using amazon-chroot",
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "vpn-ami-{{isotime | clean_resource_name}}",
+      "source_ami": "ami-0960ab670c8bb45f3",
+      "ami_description": "vpn AMI",
+      "tags": {
+        "Name": "vpn-ami-{{isotime | clean_resource_name}}",
+        "AmiType": "vpn"
+      },
+      "instance_type": "t2.medium",
+      "ssh_username": "ubuntu",
+      "region": "sa-east-1"
+    }
+  ],
+  "provisioners": [
+    {
+      "script": "{{template_dir}}/scripts/base.sh",
+      "type": "shell"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "{{template_dir}}/ansible/vpn.yml",
+      "role_paths": [
+        "{{template_dir}}/ansible/roles/vpn"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+curl 'https://api.dev.revenge-games.com/client/player/authorize-game' \
+  -H 'accept: */*' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'content-type: application/json' \
+  -H 'origin: https://wild-west-saloon.dev.revenge-games.com' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://wild-west-saloon.dev.revenge-games.com/' \
+  -H 'sec-ch-ua: "Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-site' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36' \
+  --data-raw '{"gameCode":"wild-west-saloon","playerToken":"v1j6hs7qqp2n24jjc867hqz","groupCode":"weas","brandCode":"demo","isFun":false,"language":"en"}'

@@ -1,0 +1,81 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "ECSDeploymentPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ecs:RunTask",
+                "ecs:UpdateService",
+                "ecs:DescribeServices",
+                "ecs:DescribeTasks",
+                "ecs:ListClusters",
+                "ecs:ListServices",
+                "ecs:ListTasks"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": [
+                        "ap-southeast-1",
+                        "ap-northeast-1"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "S3PutObject",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:Get*",
+                "s3:Describe*"
+                
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": [
+                        "ap-southeast-1",
+                        "ap-northeast-1"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "LambdaUpdatePermissions",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:UpdateFunctionCode",
+                "lambda:UpdateFunctionConfiguration",
+                "lambda:PublishVersion",
+                "lambda:GetFunction"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": [
+                        "ap-southeast-1",
+                        "ap-northeast-1"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "AssumeRolePermissions",
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:RequestedRegion": [
+                        "ap-southeast-1",
+                        "ap-northeast-1"
+                    ]
+                }
+            }
+        }
+    ]
+}

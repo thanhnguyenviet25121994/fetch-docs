@@ -1,0 +1,4 @@
+flask
+mangum
+psycopg2-binary
+cuid2
