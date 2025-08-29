@@ -1,0 +1,172 @@
+1/ 11.06.2025
+page 1:
+- 26: service policy and policy map
+- 27: re-test
+- 31: fusion router = fuse different virtual network = route leaking
+- 36: CAM is reverse from MAC address table. CAM search for address with data. TCAM is tripple CAM (added the X - dont care - can be either 0 or 1)
+CAM is for L2 (switching). TCAM for routing. 
+https://www.ufispace.com/company/blog/how-tcam-enables-high-speed-edge-network
+- 38: routed access - access switch become L3 switch, switch port become routed port
+- 39: local mode: centralized switch, forward traffic back to WLC
+flexconnect: decentralized, AP still function even if losing connection
+- 44: interface saturation conditions - means interface is fully utilized and any further traffic will be dropped 
+- 47: 
+inter-xTR: roaming to other ap in different access switch (inter)
+auto anchor: always connect to one device
+fast roam: connect to different ap in the same network (same switch)
+-49:
+fabric control plane: It's based on LISP Map-Server/Map-Resolver functionality - hold a database of all EPs
+https://networklessons.com/ip-routing/cisco-locator-id-separation-protocol-lisp
+-63:
+ ETR is responsible for publishing EID-to-RLOC mappings for a site because it is the receiver. IT will tell the sender what it has; E=egress = exit => publish
+- 64:
+VRF: virtual routing and forwarding (separate a physical router into logical routers with different routing tables)
+https://www.techtarget.com/searchnetworking/definition/virtual-routing-and-forwarding-VRF
+
+default VRF should be correct because this is the default one for any router without any configurations
+
+-   67:
+PITRs are for Non-LISP > LISP : PITR encapsulates packet, so it receive non LISP and make it into LISP
+PETRs are for LISP > Non-LISP
+
+- 69:
+VXLAN: encapsulate layer 2 in Layer 3. Better than VLAN: Vlan cannot cross L2 bounderies while VXLAN can cross L2 to L3 boundaries. 
+Up to 16 million unique network, while VLAN only maximum 4096
+
+- 70:
+MTU: device does not know MTU of other network, tunning this won help
+PMTUD: Path MTU Discovery - discovery MTU of other Networks by sending scouting MTU
+MSS: is like MTU, but for TCP. Can Tune this 
+
+- 74:
+lisp router reflector: used to simplify conenctions between lisp routers, all LISP router talk to router reflector instead directly
+LISP proxy ETR: recerves traffic from LISP and send to non-LISP (de-encapsulate)
+LISP ITR: receives packets from site-facing interfaces (internal network)
+LISP map resolver: accept map request
+LISP map server: learn (store) EID prefix mapping entries from ETR
+
+-75: 
+VTEP stands for VXLAN Tunnel Endpoint. It's a key component in a VXLAN (Virtual Extensible LAN) network, which is designed to extend Layer 2 networks over a Layer 3 infrastructure
+Main role: encapsulating and de-encapsulating VXLAN Ethernet frames
+
+- 78:
+text question:
+---
+Tunnel100 is up, line protocol is up Hardware is Tunnel
+Internet address is 192.168.200.1/24
+MTU 17912 bytes, BW 100 kbit/sec, DLY 50000 usec, reliability 255/255, txload 1/255, rxload 1/255 Encapsulation TUNNEL, loopback not set
+Keepalive set (10 sec), retries 3
+Tunnel source 209.165.202.129 (GigabitEthernet0/1)
+Tunnel Subblocks:
+src-track:
+Tunnel100 source tracking subblock associated with GigabitEthernet0/1
+Set of tunnels with source GigabitEthernet0/1, 1 members (includes iterators), on interface <OK> Tunnel protocol/transport GRE/IP
+Key disabled, sequencing disabled Checksumming of packets disabled
+Tunnel TTL 255, Fast tunneling enabled Tunnel transport MTU 1476 bytes
+---
+
+A. The keepalive value is modified from the default value. - this is default: 10s and 3 retries
+B. The physical interface MTU is 1476 bytes. - this is MTU of the tunnel, not physicall interface
+C. The tunnel mode is set to the default - yes, if not specified, the default is GRE (Tunnel protocol/transport GRE/IP)- correct
+D. Interface tracking is configured. - no, althoguh there is "source tracking" but it is not
+
+80:
+
+A. policy plane forwarding (SDA Fabric Policy Plane) -> Cisco TrusSec SGT tags
+B. control plane forwarding (SDA Fabric Control Plane) -> LISP
+C. data plane forwarding (SDA Fabric Data Plane) -> VXLAN
+
+82:
+- VTEP: -correct, VNID is enforced by VTEP 
+A device (physical switch or hypervisor-based virtual switch) that terminates the VXLAN tunnel.
+Performs encapsulation/decapsulation of Layer 2 Ethernet frames into/from VXLAN packets.
+Think of it as the “edge” of the VXLAN overlay network that connects end hosts to the VXLAN fabric.
+- VNID - correct
+A 24-bit identifier (sometimes called a “segment ID”) carried in the VXLAN header.
+Logically separates traffic into different “broadcast domains” or “overlay segments” within the same VXLAN fabric.
+Roughly analogous to VLAN IDs, but with a much larger ID space (up to 16 million vs. 4094 VLANs).
+
+83: 
+host  vs Virtual machine : virtual machine cause this is emulated, host is not emulated
+
+84:
+question:
+---
+Answer Area
+VSS
+combines exactly two devices - ok 
+supported on Cisco 3750 and 3850 devices
+supported on Cisco 4500 and 6500 series - ok - VSS only support upto 2 switches, but this can be in distribution or core layer and with upto 10GE of bandwidth. Thats why it works with higher version switch (6500 + 4500)
+supports devices that are geographically separated - ok
+supports up to nine devices
+uses proprietary cabling
+---
+
+VSS (Virtual Switching System) Technology?
+VSS is a Cisco proprietary technology that allows two physical switches to operate as a single logical switch. It is mainly used for simplifying Layer 2/Layer 3 designs, increasing availability, and enabling multi-chassis EtherChannel (MEC).
+
+
+86:
+
+A. Router(config-if)#ip address 192.168.1.1 255.255.255.0 - this is what the question need
+B. Router(config-vrf)#address-family ipv4 - this GigabitEthernet1 interface is associated with a vrf interface, so need to specify the IP schema of vrf first
+
+87: 
+- Recursive routing in GRE is when it detects that the best route to reach the tunnel is by the tunnel itself, this scenario happen usually when both phisical and tunnel interface are aggregated on the same routing protocol.
+- answer: C. Because the best path to the tunnel destination is through the tunnel itself. - this means traffic goes through the tunnel itself then keep doing this forever - which is recursive
+
+88:
+question
+---
+access-list 100 permit gre host 209.165.201.1 host 209.165.201.6
+crypto isakmp policy 5
+authentication pre-share hash sha256 encryption aes group 14
+crypto isakmp key D@t@c3nt3r address 209.165.201.6
+crypto ipsec transform-set My Set esp-aes esp-sha-hmac mode transport
+crypto map MAP 10 ipsec-isakmp
+set peer 209.165.201.6
+set transform-set My Set
+match address 100
+interface GigabitEthernet0/0 description outside_interface no switchport
+ip address 209.165.201.1 255.255.255.252
+crypto map MAP
+interface Tunnel100
+ip address 192.168.100.1 255.255.255.0
+ip mtu 1400
+tunnel source GigabitEthernet0/0
+tunnel destination 209.165.201.6
+ip route 10.20.0.0 255.255.255.0 192.168.100.2 Tunnel100
+access-list 100 permit gre host 209.165.201.6 host 209.165.201.1
+crypto isakmp policy 5 authentication pre-share hash sha256 encryption aes group 14
+crypto isakmp key D@t@c3nt3 address 209.165.201.1
+crypto ipsec transform-set My_Set esp-aes esp-sha-hmac mode transport
+crypto map MAP 10 ipsec-isakmp set peer 209.165.201.1
+set transform-set My_Set
+match address 100
+interface GigabitEthernet0/1 description outside_interface
+no switchport
+ip address 209.165.201.6 255.255.255.252 crypto map MAP
+interface Tunnel100
+ip address 192.168.100.2 255.255.255.0
+ip mtu 1400
+tunnel source GigabitEthernet0/1
+tunnel destination 209.165.201.1
+ip route 10.10.0.0 255.255.255.0 192.168.100.1 Tunnel100
+
+
+10.10.0.0/24
+R1
+Gi0/0
+209.165.201.1/30
+IPSEC
+R2
+10.20.0.0/24
+Gi0/1 209.165.201.6/30
+---
+
+thanhnguyenviet25121994@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
+
+https://thanhnguyenviet25121994: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@github.com/thanhnguyenviet25121994/fetch-technology_29_08_25.git
+
+
+https://thanhnguyenviet25121994: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@github.com/thanhnguyenviet25121994/fetch-docs.git

@@ -1,0 +1,122 @@
+give me command for this:
+Create ACL 101.
+
+o    Explicitly block FTP access to the Enterprise Web Server (192.168.1.70/29) from the internet: this should be done by blocking all FTP traffic source from Se0/1/0)
+
+
+o    No ICMP traffic from the internet should be allowed to any hosts on HQ LAN 1 (192.168.1.0/26): this should be done by blocking all ICMP traffic source from Se0/1/0)
+
+o    Allow all other traffic.
+
+---
+enable
+configure terminal
+
+! Create ACL 101
+access-list 101 deny tcp any 192.168.1.70 0.0.0.7 eq ftp
+access-list 101 deny icmp any 192.168.1.0 0.0.0.63
+access-list 101 permit ip any any
+
+! Apply ACL to incoming traffic on interface Se0/1/0
+interface Se0/1/0
+ip access-group 101 in
+
+end
+write memory
+---
+
+
+2/ 
+give me command on cpt:
+o    Use ACL number 111
+
+o    No hosts on HQ LAN 1(192.168.1.0/26) should be able to access the Branch Server.(192.168.2.45/28)
+
+o    All other traffic should be permitted.
+---
+configure terminal
+
+! Step 1: Create ACL 111
+access-list 111 deny ip 192.168.1.0 0.0.0.63 192.168.2.45 0.0.0.15
+access-list 111 permit ip any any
+
+! Step 2: Apply ACL to the Serial0/1/1 interface (inbound)
+interface Serial0/1/1
+ip access-group 111 in
+
+! (Optional) Step 3: Verify ACL
+end
+show access-lists 111
+show ip interface Serial0/1/1
+
+
+---
+#Delete access list
+interface Serial0/1/1
+no ip access-group 111 in
+exit
+
+3/ 
+
+o    Create a named standard ACL. Use the name vty_block. The name of your ACL must match this name exactly.
+
+o    Only addresses from the HQ LAN 2 network (192.168.1.64/29)should be able to access the VTY lines of the HQ router:
+---
+
+enable
+configure terminal
+
+! Step 1: Create a named standard ACL (only permit HQ LAN 2)
+ip access-list standard vty_block
+ permit 192.168.1.64 0.0.0.7
+exit
+
+! Step 2: Apply it to the VTY lines
+line vty 0 4
+access-class vty_block in
+exit
+
+! (Optional) Step 3: Verify
+end
+show access-lists
+show running-config | include access-class
+
+---
+4/ 
+o    Create a named extended ACL called branch_to_hq. The name of your ACL must match this name exactly.
+
+o    No hosts on either of the Branch LANs (192.168.2.0/27 on G0/0/0) and (192.168.2.32/28 on G0/0/1) should be allowed to access HQ LAN 1(192.168.1.0/26). Use one access list statement for each of the Branch LANs.
+
+o    All other traffic should be allowed.
+---
+enable
+configure terminal
+
+! Step 1: Create the named extended ACL "branch_to_hq"
+ip access-list extended branch_to_hq
+
+! Block traffic from Branch LAN 1 (192.168.2.0/27) to HQ LAN 1 (192.168.1.0/26)
+deny ip 192.168.2.0 0.0.0.31 192.168.1.0 0.0.0.63
+
+! Block traffic from Branch LAN 2 (192.168.2.32/28) to HQ LAN 1 (192.168.1.0/26)
+deny ip 192.168.2.32 0.0.0.15 192.168.1.0 0.0.0.63
+
+! Allow all other traffic
+permit ip any any
+
+! Step 2: Apply the ACL to the appropriate interfaces
+
+! Apply the ACL to G0/0/0 (incoming direction)
+interface GigabitEthernet0/0/0
+ip access-group branch_to_hq in
+exit
+
+! Apply the ACL to G0/0/1 (incoming direction)
+interface GigabitEthernet0/0/1
+ip access-group branch_to_hq in
+exit
+
+! (Optional) Step 3: Verify the ACL
+end
+show access-lists
+show running-config | include access-group

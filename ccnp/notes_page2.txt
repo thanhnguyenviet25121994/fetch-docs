@@ -1,0 +1,267 @@
+- 51: 
+RSVP (Resource Reservation Protocol (RSVP)) reserve resources, this is a control protocol similar to ICMP
+BFD: Bidirectional Forwarding Detection (BFD) used to quickly detect failures
+- 52: 
+TOS field (DSCP) can both be used for classifcation and marking. 
+exp: There are 4 routers. The first 1 classifcation the packet and mark to TOS field. The second found that mark, so it does not re-classification but rather use the mark to classify and send packet. This goes on.
+- 55:
+55 ><39???
+- 59: 
+A and C is very similar
+- 60: not sure
+Link Management Protocol : ensure integrity, monitor and health check SVL ( StackWise Virtual links) -> C or D, D may be
+- 61: not sure
+broadcast radiation (broadcast storm): the excessive amount of broadcast traffic in a network
+
+-62: check for MTU/segment
+A. TCP window size - maximum data receiver willing to take in a point in time 
+B. IP MTU - Maximum Transmission Unit => set higher so no fragmentation needed
+C. TCP MSS - Maximum Segment Size => set higher so no fragmentation needed
+D. DF bit clear - not set this mean segmentation
+E. MTU ignore - use for ospf, ignore MTU if not match, no effect
+-63: 
+ETR:  The ETR is the only device that publishes EID-to-RLOC mappings for a site. It publishes mappings to the Map Server
+ MR/MS: Map resolver/mapserver - like a database store mapping, when get querried, it response
+ITR: query the infor, not publish it
+-66: 
+VRF and VRF-lite: VRF is used by ISP, VRF-lite (a lightweigh VRF) used by enterprise. 
+VRF can make logical routers from a physical one. If there are 2 interfaces with the same network (G0/0 - 10.0.0.0/24 and G0/1 - 10.0.0.0/24), need VRF for this (else there will be conflict)
+
+A. Route targets control the import and export of routes into a customer routing table. - yes 
+B. When BGP is configured, route targets are transmitted as BGP standard communities. - VRF-lite not using BGP
+C. Route targets allow customers to be assigned overlapping addresses. - Route Distinguisher identify overlapping IPs
+D. Route targets uniquely identify the customer routing table. - Route Distinguisher identify routing table
+
+https://www.youtube.com/watch?v=Zy-d3iR24p4
+
+- 67:
+PITRs are for Non-LISP > LISP
+PETRs are for LISP > Non-LISP
+
+- 89:
+How GRE tunnel works:
+https://www.youtube.com/watch?v=ytAqv7qHGyU&t=147s
+
+Transform-set: A transform set is a combination of security protocols and algorithms. There is no transform set ACL so A is incorrect
+crypto map: we dont need this for IPsec cause we have transfomr set already.
+
+To configure IPsec over GRE, we neeD:
+IPsEC Profile 
+Transform-set 
+Apply interface
+
+++++
+Configure ipse over gre: 
+- create gre tunnel
+- create phrase 1 IPSEC for nodes authentication (item 2 and 3)
+- create phrase 2 IPSEC: define how data is encrypted with transform set and create IPSEC profile
+- assign the profile to tunnel gre
+Actual configs
+! 1. Configure tunnel gre
+interface Tunnel0
+ Ip address 192.168.1.1 255.255.255.0
+ tunnel source 20.20.20.1
+ tunnel destination 10.10.10.1
+ ip mtu 1476
+ ip tcp adjust-mss 1436
+
+! 2. Configure ISAKMP (IKE) Policy for IPsec
+crypto isakmp policy 10
+ encryption aes
+ hash sha
+ authentication pre-share
+ group 2
+ lifetime 86400
+
+! 3. Set Pre-shared key for peer
+crypto isakmp key MySecretKey address 0.0.0.0
+
+! 4. Define IPsec transform set
+crypto ipsec transform-set MYTRANSFORM esp-aes esp-sha-hmac
+
+! 5. Create an IPsec profile
+crypto ipsec profile GRE-IPSEC-PROFILE
+ set transform-set MYTRANSFORM
+
+! 6. apply to are tunnel
+interface Tunnel0
+ tunnel protection ipsec profile GRE-IPSEC-PROFILE
+
+
+---
+we dont need crypto map and ACL
+#98:
+C - need to assign vrf to E0/0 and advertise this new vrf to ospf
+
+#99:
+
+interface Vlan10
+!
+ip vrf forwarding Customer1
+ip address 192.168.1.1 255.255.255.0
+interface Vlan20
+!
+ip vrf forwarding Customer2
+ip address 172.16.1.1 255.255.255.0
+interface Vlan30
+ip vrf forwarding Customer3
+ip address 10.1.1.1 255.255.255.0
+---
+Refer to the exhibit. Which configuration allows Customer2 hosts to access the FTP server of Customer1 that has the IP address of 192.168.1.200?
+
+A.
+ip route vrf Customer1 172.16.1.0 255.255.255.0 172.16.1.1 global
+ip route vrf Customer2 192.168.1.200 255.255.255.255 192.168.1.1 global
+ip route 192.168.1.0 255.255.255.0 Vlan10
+ip route 172.16.1.0 255.255.255.0 Vlan20
+B.
+ip route vrf Customer1 172.16.1.1 255.255.255.255 172.16.1.1 global
+ip route vrf Customer2 192.168.1.200 255.255.255.0 192.168.1.1 global
+ip route 192.168.1.0 255.255.255.0 Vlan10
+ip route 172.16.1.0 255.255.255.0 Vlan20
+C.
+ip route vrf Customer1 172.16.1.0 255.255.255.0 172.16.1.1 Customer2
+ip route vrf Customer2 192.168.1.200 255.255.255.255 192.168.1.1 Customer1
+D.
+ip route vrf Customer1 172.16.1.0 255.255.255.0 172.16.1.1 Customer1
+ip route vrf Customer2 192.168.1.200 255.255.255.255 192.168.1.1 Customer2
+
+Either A and B - is correct, but A is the correct one because B only shows route to 1 IP 172.16.1.1 255.255.255.255. also, route to 182.168.1.200 255.255.255.0 is not correct
+
+#100:
+A - keep alive can be different
+B is correct: tunnel destination will be known via tunnel interface means loops
+C - not working
+D - cannot know
+
+- The key for B is: network 0.0.0.0 255.255.255.255 area 0 will advertise the destination of the tunnel through the tunnel interface itself. So to get to its destination (209.165.201.2) it goes back through the tunnel, which makes an infinite loop. 
+- To avoid, there must be a static route directly between these two tunnel destinations, so ospf won't overwrite this config. (Note that the command ip route 0.0.0.0 0.0.0.0 209.165.200.225 won't get prioritized) 
+
+
+
+*** Additional note:
+- Vrf route leaking to global:
++ Add to vrf routing table: ip route vrf CUST-A 30.30.30.0 255.255.255.252 30.30.30.1 global (use global to point)
++ Add to global routing table: ip route 10.10.10.0 255.255.255.0 fa2/0 (only specify the interface to point to vrf, cannot use ip here)
+
+- vrf route leaking among vrfs: vrf should be difference network, use keyword global to route leaking
+
+---
+
+
+! 2. Configure ISAKMP (IKE) Policy for IPsec
+crypto isakmp policy 10
+ encryption aes
+ hash sha
+ authentication pre-share
+ group 2
+ lifetime 86400
+
+! 3. Set Pre-shared key for peer
+crypto isakmp key MySecretKey address 0.0.0.0
+
+! 4. Define IPsec transform set
+crypto ipsec transform-set MYTRANSFORM esp-aes esp-sha-hmac
+
+! 5. Create an IPsec profile
+crypto ipsec profile GRE-IPSEC-PROFILE
+ set transform-set MYTRANSFORM
+
+! 6. apply to are tunnel
+interface Tunnel0
+ tunnel protection ipsec profile GRE-IPSEC-PROFILE
+
+
+removeWriteVersion
+---
+
+add PROMO_WS_BASE_URL env to share ui on all production
+
+wss://promotion.dev.revenge-games.com
+
+wss://promotion.sandbox.revenge-games.com
+
+wss://promo-api.rg-lgna.com
+---
+
+wibs68s5ev700a9r0xlukhiv	Lucky Caramelo	lucky-caramelo
+
+sync betsetting sb to prod lucky caramelo
+---
+
+Deploy game acewin to production oc=acewindemo
+- acewin-clones: https://github.com/Revenge-Games/acewin-clones
+- logic
+- adaptor
+
+1. Zeus
+2. SuperBar
+3. TonsOfMoney
+4. MayanEmpire
+5. HulaoBattle
+
+---
+
+deploy prosperity clash (causal game), thanks
+git repo: https://github.com/Revenge-Games/logic-prosperity-clash
+
+---
+Change back to 0.92 for oc freekey OCs (not MY)
+---
+
+
+7b269e271b79253b
+---
+
+
+Deploy game acewin to production oc=acewindemo
+- acewin-clones: https://github.com/Revenge-Games/acewin-clones
+- logic
+- adaptor
+
+lqqrfb3essmy28fs9jgqdi1e	Mayan Empire	acewin-MayanEmpire	https://api.acewin-gaming.com/acewin-MayanEmpire/	http://logic-mayan-empire-clonedacewin.revenge-games.global.   MayanEmpire/
+s3gppo4xm9svjy9nn0d7kvmo	Super Bar	acewin-SuperBar	https://api.acewin-gaming.com/acewin-SuperBar/	http://logic-super-bar-clonedacewin.revenge-games.global                       SuperBar/
+tnsee7q0qt025a57e7grj2re	Tons Of Money	acewin-TonsOfMoney	https://api.acewin-gaming.com/acewin-TonsOfMoney/	http://logic-tons-of-money-clonedacewin.revenge-games.global. TonsOfMoney/
+ycv7ski1ie2c9o6zq2lv3wqu	Hulao Battle	acewin-HulaoBattle	https://api.acewin-gaming.com/acewin-HulaoBattle/	http://logic-hulao-battle-clonedacewin.revenge-games.global.  HulaoBattle/
+ylmhjyw9yaknervqhhe6mvla	Zeus	acewin-Zeus	https://api.acewin-gaming.com/acewin-Zeus/	http://logic-zeus-clonedacewin.revenge-games.global.                                   Zeus/
+
+static.acewin-gaming.com
+
+static.acewin.sandbox.revenge-games.com
+
+logic-mayan-empire-clonedacewin,logic-super-bar-clonedacewin,logic-tons-of-money-clonedacewin,logic-hulao-battle-clonedacewin,logic-zeus-clonedacewin
+
+('logic-mayan-empire-clonedacewin','logic-super-bar-clonedacewin','logic-tons-of-money-clonedacewin','logic-hulao-battle-clonedacewin.revenge-games','logic-zeus-clonedacewin')
+
+---
+
+您好， 此前配置的测试环境信息，网址和IP劳烦更换一下，我们调整一下配置
+
+网站网址：https://itest.bigwinow 
+服务器白名单 IP： 18.183.145.113     43.206.153.154
+
+
+Hello, please change the previously configured test environment information, URL and IP. We will adjust the configuration
+
+Website URL: https://itest.bigwinow
+Server whitelist IP: 18.183.145.113 43.206.153.154
+
+---
+
+"PlayerId":"BX600366727BRL"
+Manufacturer: PragmaticPlay
+Game: Sugar Rush 1000
+Account Change Number: 01K08072QDJHNAPH5Y0AWJ015J
+Issue: The user said that the R$32.88 bonus he received was incorrect. He claimed that the bonus for the red bears should have been paid, and pointed out that the bears and the multiplier reached 512 times. He also said: "Before this round went wrong, my bonus was 26.96, plus the orange 5.92, a total of 32.88, right? So where did the red payout go?
+
+Please verify it. Thank you
+---
+
+
+
+Platform: AFUN MX
+Player ID: AFM201730814MXN
+Game: Fortune Tiger (pgs-fortune-tiger)
+Bet Number: 01K1XFTRA7YX526QJ2XF3Y471S
+01K1W3B8G018JH3J76WMFYT9NE
+Question: A player reported that their winnings in two rounds were multiplied by 10: 400 in one round and 320 in the other. Their winnings were not multiplied by 10. Please confirm this.

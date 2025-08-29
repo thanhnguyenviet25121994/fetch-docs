@@ -1,0 +1,23 @@
+255.255.255.0 -> 0.0.0.255
+0.0.0.63 -> 255.255.255.
+
+.0 /24 -> 255 hosts
+.0 /25 -> 127 hosts
+.0 /26 -> 63 hosts
+
+255.255.255.254
+
+Wildcard
+63 hosts +1=64 -> /26
+1 hosts + 1=2 -> /31
+254 hosts ->
+0 hosts +1 =1 -> /32
+ 
+
+---
+
+401 authentication failed
+404 authorized fail
+
+501 page not found
+503 internal server error

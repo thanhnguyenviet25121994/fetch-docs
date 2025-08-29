@@ -1,0 +1,348 @@
+I/ Basic configuration for Router, Switch and ASA
+1. Naming: Assign names to Routers, Switches, and ASA according to the network architecture (R1, R2, ISP, SW01, SW02…)
+---
+conf t
+hostname R1
+---
+2 Setting Password and Banner 
+- Password for Console and VTY line: Ciscocopa55
+---
+conf t
+line console 0
+password Ciscocopa55
+login
+exit
+
+line vty 0 4
+password Ciscocopa55
+login
+exit
+---
+- Enable secret password: Ciscoenpa55.
+
+---
+conf t
+enable secret Ciscoenpa55
+---
+
+- setting Banner
+---
+banner motd #
+Unauthorized access is prohibited. Disconnect immediately if you are not an authorized user.
+#
+
+Now, when someone connects via console, SSH, or Telnet, they'll see:
+Unauthorized access is prohibited. Disconnect immediately if you are not an authorized user.
+
+
+Examples:
+---
+enable
+conf t
+hostname SW02
+
+line console 0
+password Ciscocopa55
+login
+exit
+
+line vty 0 4
+password Ciscocopa55
+login
+exit
+
+enable secret Ciscoenpa55.
+enable secret Ciscoenpa55
+
+banner motd #
+Unauthorized access is prohibited. Disconnect immediately if you are not an authorized user.
+#
+---
+
+***Note: use ctr+shift+6 to escape error command
+
+
+II/ Configure VLAN on SWL3
+| VLAN ID | VLAN Name | Ports           | VLAN IP (SVI)   |
+| ------- | --------- | --------------- | --------------- |
+| 10      | CCNA10    | Fa0/5 – Fa0/10  | 192.168.10.1/24 |
+| 20      | CCNA20    | Fa0/15 – Fa0/20 | 192.168.20.1/24 |
+
+
+Configure the smallest Ipv4 address as the default gateway for devices in VLAN10, VLAN20
+
+---
+enable
+configure terminal
+
+! Create VLANs with names
+vlan 10
+ name CCNA10
+exit
+
+vlan 20
+ name CCNA20
+exit
+
+! Assign access ports to VLAN 10 (Fa0/5 - Fa0/10)
+interface range fa0/5 - 10
+ switchport mode access
+ switchport access vlan 10
+exit
+
+! Assign access ports to VLAN 20 (Fa0/15 - Fa0/20)
+interface range fa0/15 - 20
+ switchport mode access
+ switchport access vlan 20
+exit
+
+! Create SVI for VLAN 10
+interface vlan 10
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+exit
+
+! Create SVI for VLAN 20
+interface vlan 20
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+exit
+
+! Enable Layer 3 routing
+ip routing
+
+end
+write memory
+---
+
+
+III/ Router Configuration
+1. ISP, R1 and R2 configuration
+- Asigning Ipv4 address for Serial, and Giga Ethernet interface
+- The IP address for the connection between the ASA and the ISP is: 209.165.200.2/29
+- LAN1_60 Hosts
+- LAN2_40 Hosts
+2. ISP configuration
+- Default route between ISP and ASA
+---
+- ISP
+ip route 0.0.0.0 0.0.0.0 209.165.200.1
+---
+3. ASA configuration
+- Configure the smallest Ipv4 address for g1/1; g1/2 and g1/3
+
+example command to add IPS:
+---
+- Firewall:
+enable
+configure terminal
+interface G1/1
+ ip address 209.165.200.1 255.255.255.248
+ no shutdown
+exit
+
+interface G1/2
+ ip address 192.168.2.1 255.255.255.252
+ no shutdown
+exit
+
+interface G1/3
+ ip address 172.16.0.1 255.255.0.0
+ no shutdown
+exit
+
+- SWL3: (convert swwitchport to routed port)
+interface G0/1
+ no switchport
+ ip address 192.168.2.2 255.255.255.252
+ no shutdown
+
+- ISP:
+configure terminal
+interface G0/1
+ ip address 209.165.200.2 255.255.255.248
+ no shutdown
+exit
+
+configure terminal
+interface se0/1/0
+ ip address 192.0.2.1 255.255.255.252
+ no shutdown
+exit
+
+configure terminal
+interface se0/1/1
+ ip address 192.51.100.1 255.255.255.252
+ no shutdown
+exit
+
+- R1: 
+configure terminal
+interface G0/1
+ ip address 192.168.1.1 255.255.255.192
+ no shutdown
+exit
+
+configure terminal
+interface se0/0/0
+ ip address 192.0.2.2 255.255.255.252
+ no shutdown
+exit
+
+configure terminal
+interface se0/0/1
+ ip address 203.0.113.2 255.255.255.252
+ no shutdown
+exit
+
+- R2: 
+configure terminal
+interface G0/1
+ ip address 192.168.2.1 255.255.255.192
+ no shutdown
+exit
+
+configure terminal
+interface se0/0/0
+ ip address 198.51.100.2 255.255.255.252
+ no shutdown
+exit
+
+configure terminal
+interface se0/0/1
+ ip address 203.0.113.1 255.255.255.252
+ no shutdown
+exit
+
+
+IV/ OSPF and static route
+1. Configure OSPF on all the router R1, R2, ISP with AS=10
+2. Default route on ISP and  advertise into routing domain OSPF
+pattern: 
+router ospf <process-id>
+ network <network-address> <wildcard-mask> area <area-id>
+---
+- ISP:
+router ospf 1
+ network 192.0.2.0 0.0.0.3 area 10
+ network 198.51.100.0 0.0.0.3 area 10
+ default-information originate
+exit
+
+- R1:
+router ospf 1
+ network 192.0.2.0 0.0.0.3 area 10
+ network 203.0.113.0 0.0.0.3 area 10
+ network 192.168.1.0 0.0.0.63 area 10
+exit
+
+- R2: 
+router ospf 1
+ network 198.51.100.0 0.0.0.3 area 0
+ network 203.0.113.0 0.0.0.3 area 0
+ network 192.168.2.0 0.0.0.63 area 0
+exit
+
+
+Show command: 
+---
+running-config | section ospf
+---
+### infor only
+- ISP:
+209.165.200.0/29
+192.0.2.0/30
+198.51.100.0/30
+default route
+
+- R1: 
+192.0.2.0/30
+203.0.113.0/30
+192.168.1.0/26
+
+- R2: 
+198.51.100.0/30
+203.0.113.0/30
+192.168.2.0/26
+###
+
+***Note: for ospf to work: 
+- run: show ip ospf neighbor: should show all neighbor
+- if not, check Ip on connected interfaces are correct or not. Ping to verify
+
+3. Configure a default static route on the ASA OUTSIDE interface to enable the ASA to reach external networks
+---
+conf t 
+in g1/1
+nameif outside
+route outside 0.0.0.0 0.0.0.0 209.165.200.2
+---
+4. Static route between the ASA and VLANs belong to SWL3
+---
+conf t 
+in g1/2
+nameif outside
+route outside 0.0.0.0 0.0.0.0 209.165.200.2
+
+
+route inside 192.168.0.0 255.255.0.0 192.1.2.2
+---
+
+5.  Default route between SWL3 and ASA
+ip route 0.0.0.0 0.0.0.0 192.1.2.1
+
+V/ NAT, DHCP, Access list and remote access (SSH)
+1. NAT
+- Create network object INSIDE-NAT and assign attributes to it using the subnet and nat commands. (Use the summary route method to summarize the networks in the INSIDE area) to translate the entire address range in the INSIDE network into the address range 209.165.200.0/29
+---
+in g1/2
+nameif inside 
+exit
+
+configure terminal
+
+object network INSIDE-NAT
+ subnet 192.168.0.0 255.255.0.0
+ nat (inside,outside) dynamic interface
+---
+
+- Configure a network object named WEB-NAT and assign it the static IP address of the DMZ server (172.16.0.254). While in object definition mode, use the nat command to specify that this object is used to translate a DMZ address to an OUTSIDE address using static NAT, and specify a public translated address of 209.165.200.3/29
+---
+
+---
+- Configure a network object named DNS-NAT and assign it the static IP address of the DMZ server (172.16.0.200). While in object definition mode, use the nat command to specify that this object is used to translate a DMZ address to an OUTSIDE address using static NAT, and specify a public translated address of 209.165.200.4/29
+
+***Note: offical guide nat for ASA
+---
+The following example configures dynamic NAT that hides 192.168.2.0 network behind a range of outside addresses 10.2.2.1 through 10.2.2.10:
+
+hostname(config)# object network my-range-obj
+hostname(config-network-object)# range 10.2.2.1 10.2.2.10
+hostname(config)# object network my-inside-net
+hostname(config-network-object)# subnet 192.168.2.0 255.255.255.0
+hostname(config-network-object)# nat (inside,outside) dynamic my-range-obj
+ 
+The following example configures dynamic NAT with dynamic PAT backup. Hosts on inside network 10.76.11.0 are mapped first to the nat-range1 pool (10.10.10.10-10.10.10.20). After all addresses in the nat-range1 pool are allocated, dynamic PAT is performed using the pat-ip1 address (10.10.10.21). In the unlikely event that the PAT translations are also use up, dynamic PAT is performed using the outside interface address.
+
+hostname(config)# object network nat-range1
+hostname(config-network-object)# range 10.10.10.10 10.10.10.20
+ 
+hostname(config-network-object)# object network pat-ip1
+hostname(config-network-object)# host 10.10.10.21
+ 
+hostname(config-network-object)# object-group network nat-pat-grp
+hostname(config-network-object)# network-object object nat-range1
+hostname(config-network-object)# network-object object pat-ip1
+ 
+hostname(config-network-object)# object network my_net_obj5
+hostname(config-network-object)# subnet 10.76.11.0 255.255.255.0
+hostname(config-network-object)# nat (inside,outside) dynamic nat-pat-grp interface
+---
+
+***Note:
+interface GigabitEthernet1/3
+ nameif DMZ
+ security-level 0
+ ip address 172.16.0.1 255.255.0.0
+---
+security level 0 and name to ping on ASA
