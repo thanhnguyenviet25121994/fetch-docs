@@ -1,0 +1,1 @@
+aws ssm start-session --region eu-west-1 --target i-080b35ca39580a7a2 --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters '{"host":["prd-eu-20241118084544899900000003.cluster-ctok2ucimdyz.eu-west-1.rds.amazonaws.com"],"portNumber":["5432"],"localPortNumber":["5555"]}'
