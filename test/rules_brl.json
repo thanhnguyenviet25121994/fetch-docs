@@ -1,0 +1,1885 @@
+{
+    "Rules": [
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/6c50940130089fbc",
+            "Priority": "24",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "*.git/config",
+                        "*.asp",
+                        "*.php",
+                        "*.jsp",
+                        "*.htm"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "*.git/config",
+                            "*.asp",
+                            "*.php",
+                            "*.jsp",
+                            "*.htm"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "redirect",
+                    "Order": 1,
+                    "RedirectConfig": {
+                        "Protocol": "HTTPS",
+                        "Port": "443",
+                        "Host": "www.google.com",
+                        "Path": "/",
+                        "Query": "",
+                        "StatusCode": "HTTP_301"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/70255faa7a940824",
+            "Priority": "25",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "*.exe",
+                        "/wp-*",
+                        "*.cgi_*",
+                        "/.git/config",
+                        "/robots.txt"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "*.exe",
+                            "/wp-*",
+                            "*.cgi_*",
+                            "/.git/config",
+                            "/robots.txt"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "redirect",
+                    "Order": 1,
+                    "RedirectConfig": {
+                        "Protocol": "HTTPS",
+                        "Port": "443",
+                        "Host": "www.google.com",
+                        "Path": "/",
+                        "Query": "",
+                        "StatusCode": "HTTP_301"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/153c4d84a59183f4",
+            "Priority": "48",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rc.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rc.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/v1/launcher/authenticate"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/v1/launcher/authenticate"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/96860e154220aadf",
+            "Priority": "50",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "apig.rg-lgna.com",
+                        "api.rg-lgna.com",
+                        "apibrl.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "apig.rg-lgna.com",
+                            "api.rg-lgna.com",
+                            "apibrl.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/v1/transfer/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/v1/transfer/*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-transfer-wallet/658fe90e696d9224",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-transfer-wallet/658fe90e696d9224",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/551472dcb68bba25",
+            "Priority": "51",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/com.revenge.entity.v1.PlayService",
+                        "/api/v1/*/players/stats",
+                        "/api/v1/*/leaderboard*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/com.revenge.entity.v1.PlayService",
+                            "/api/v1/*/players/stats",
+                            "/api/v1/*/leaderboard*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-crash/0d35f73275064eba",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-crash/0d35f73275064eba",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/836a5413f4348e0a",
+            "Priority": "97",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rcg.rg-lgna.com",
+                        "asg.rg-lgna.com",
+                        "rgg.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rcg.rg-lgna.com",
+                            "asg.rg-lgna.com",
+                            "rgg.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/v1/client/*/env-config.*.js",
+                        "/api/v1/client/*/env-config.js"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/v1/client/*/env-config.*.js",
+                            "/api/v1/client/*/env-config.js"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/54623f6dc90a16df",
+            "Priority": "99",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/v2/balance"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/v2/balance"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "api.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "api.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/0d36386d67c2563c",
+            "Priority": "101",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/v1/client/*/env-config.*.js",
+                        "/api/v1/client/*/env-config.js"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/v1/client/*/env-config.*.js",
+                            "/api/v1/client/*/env-config.js"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rc.rg-lgna.com",
+                        "as.rg-lgna.com",
+                        "rg.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rc.rg-lgna.com",
+                            "as.rg-lgna.com",
+                            "rg.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/70ec17b21d42a36a",
+            "Priority": "102",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "*.py",
+                        "*.cfm",
+                        "*.pl",
+                        "*.cgi",
+                        "*.aspx"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "*.py",
+                            "*.cfm",
+                            "*.pl",
+                            "*.cgi",
+                            "*.aspx"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "redirect",
+                    "Order": 1,
+                    "RedirectConfig": {
+                        "Protocol": "HTTPS",
+                        "Port": "443",
+                        "Host": "www.google.com",
+                        "Path": "/",
+                        "Query": "",
+                        "StatusCode": "HTTP_301"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/599bd7cfc8c26998",
+            "Priority": "114",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "*.action",
+                        "*.txt",
+                        "*.cfml",
+                        "*.lock"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "*.action",
+                            "*.txt",
+                            "*.cfml",
+                            "*.lock"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "redirect",
+                    "Order": 1,
+                    "RedirectConfig": {
+                        "Protocol": "HTTPS",
+                        "Port": "443",
+                        "Host": "www.google.com",
+                        "Path": "/",
+                        "Query": "",
+                        "StatusCode": "HTTP_301"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/35e01004b43fd7dc",
+            "Priority": "175",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/favicon.ico"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/favicon.ico"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "api.rg-lgna.com",
+                        "apig.rg-lgna.com",
+                        "apibrl.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "api.rg-lgna.com",
+                            "apig.rg-lgna.com",
+                            "apibrl.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "StatusCode": "404",
+                        "ContentType": "text/plain"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/ad9d5f83b5c12e88",
+            "Priority": "190",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "api.1adz83lbv.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "api.1adz83lbv.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-pgs-adaptor/3d2bbb784f9e6500",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-pgs-adaptor/3d2bbb784f9e6500",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/df9d957a5a336aeb",
+            "Priority": "200",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rcg.rg-lgna.com",
+                        "apig.rg-lgna.com",
+                        "api.rg-lgna.com",
+                        "asg.rg-lgna.com",
+                        "rgg.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rcg.rg-lgna.com",
+                            "apig.rg-lgna.com",
+                            "api.rg-lgna.com",
+                            "asg.rg-lgna.com",
+                            "rgg.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/a0e1aa0f4e2cf98a",
+            "Priority": "201",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "apibrl.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "apibrl.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/10722ffb451af7dc",
+            "Priority": "202",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rg.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rg.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*/config",
+                        "/client/*",
+                        "/*/spin",
+                        "/api/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*/config",
+                            "/client/*",
+                            "/*/spin",
+                            "/api/*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/f8d0995796f50358",
+            "Priority": "203",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*/config",
+                        "/client/*",
+                        "/*/spin",
+                        "/api/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*/config",
+                            "/client/*",
+                            "/*/spin",
+                            "/api/*"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rc.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rc.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/33bb9ef4c6d84b2e",
+            "Priority": "206",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "as.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "as.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*/config",
+                        "/client/*",
+                        "/*/spin",
+                        "/api/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*/config",
+                            "/client/*",
+                            "/*/spin",
+                            "/api/*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/25daa7e3224604d5",
+            "Priority": "209",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "g.pragmaticpplay.com",
+                        "pragmaticpplay.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "g.pragmaticpplay.com",
+                            "pragmaticpplay.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-pp-adaptor/51cdb082dcf35846",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-pp-adaptor/51cdb082dcf35846",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/9893a81289bf456c",
+            "Priority": "220",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "api.hacksawproduction.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "api.hacksawproduction.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-hacksaw-adaptor/ecedf5e0269d64de",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-hacksaw-adaptor/ecedf5e0269d64de",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/27d768131acf9921",
+            "Priority": "221",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "wf.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "wf.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-wf-adapter/3a448f4888dc2451",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-wf-adapter/3a448f4888dc2451",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/18c6c284237fe0dd",
+            "Priority": "231",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/client/player/authorize-game",
+                        "/client/game/*",
+                        "/*/config.json"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/client/player/authorize-game",
+                            "/client/game/*",
+                            "/*/config.json"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rg.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rg.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/b442ea85572e305d",
+            "Priority": "232",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/client/player/authorize-game",
+                        "/client/game/*",
+                        "/*/config.json"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/client/player/authorize-game",
+                            "/client/game/*",
+                            "/*/config.json"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rc.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rc.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/d3f05afd3370f3f3",
+            "Priority": "233",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "as.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "as.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/client/player/authorize-game",
+                        "/client/game/*",
+                        "/*/config.json"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/client/player/authorize-game",
+                            "/client/game/*",
+                            "/*/config.json"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/c3cd7e7868518b69",
+            "Priority": "250",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "cag.rg-lgna.com",
+                        "ca.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "cag.rg-lgna.com",
+                            "ca.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/39941c53acc9560f",
+            "Priority": "300",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/*"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "api2.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "api2.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client-2/cd24a6d7d4159557",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client-2/cd24a6d7d4159557",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/0fae28d6135f3d99",
+            "Priority": "331",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "web.rectangle-games.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "web.rectangle-games.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-web-rectangle-games/3eec4e58292a714a",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-web-rectangle-games/3eec4e58292a714a",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/89565deb56e42fc2",
+            "Priority": "600",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "entity.prod.rg-lgna.com",
+                        "bo.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "entity.prod.rg-lgna.com",
+                            "bo.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-entity-http/73b5a4a0ba52a914",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-entity-http/73b5a4a0ba52a914",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/39b848012fdac2a6",
+            "Priority": "668",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "lobby.pragmaticpplay.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "lobby.pragmaticpplay.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "MessageBody": "{\"baseApiUrl\":\"https://api.rg-lgna.com\",\"gameLaunchUrl\":\"https://pragmaticpplay.com\"}",
+                        "StatusCode": "200",
+                        "ContentType": "application/json"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/a1ccda69d899f8fb",
+            "Priority": "1000",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "operator-demo.*"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "operator-demo.*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-operator-demo/9bf3c328e1af40a1",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-operator-demo/9bf3c328e1af40a1",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/bf61af7964235f08",
+            "Priority": "1101",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "jili.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "jili.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-jili-adapter/93bcfec27107ab51",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-jili-adapter/93bcfec27107ab51",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/33804a594a6c0c1a",
+            "Priority": "2220",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "api.acewin-gaming.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "api.acewin-gaming.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-acewin-adaptor/0049834d8a624fb7",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-acewin-adaptor/0049834d8a624fb7",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/961cc30a65f4f0cd",
+            "Priority": "29000",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "op.pxplay88.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "op.pxplay88.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-portal-operator-2/d220a4c98197e56c",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-portal-operator-2/d220a4c98197e56c",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/44dcc764ecd8d91b",
+            "Priority": "30002",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "rectangle-games.com",
+                        "www.rectangle-games.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "rectangle-games.com",
+                            "www.rectangle-games.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-web-rectangle-games/3eec4e58292a714a",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-web-rectangle-games/3eec4e58292a714a",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/3be514a05c449bdb",
+            "Priority": "39000",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "share-ui-game-client.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "share-ui-game-client.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/f796736d01aae345",
+            "Priority": "39001",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "uig.rg-lgna.com",
+                        "share-ui-game-client.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "uig.rg-lgna.com",
+                            "share-ui-game-client.rg-lgna.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/b5cd6b43400d63d0",
+            "Priority": "40001",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "share-ui-game-client.rg-lgna.com",
+                        "uig.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "share-ui-game-client.rg-lgna.com",
+                            "uig.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-share-ui-game-client/ba6f3b13d6f4927f",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-share-ui-game-client/ba6f3b13d6f4927f",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false,
+                            "DurationSeconds": 3600
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/4ef9b1edfd952a27",
+            "Priority": "48000",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/v1/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/v1/*"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "pxplay88.com",
+                        "lobby.rg-lgna.com",
+                        "lobby.revenge-games.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "pxplay88.com",
+                            "lobby.rg-lgna.com",
+                            "lobby.revenge-games.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/2f472c6ee589859f",
+            "Priority": "48001",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "pxplay88.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "pxplay88.com"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/api/v1/*"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/api/v1/*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-game-client/c632f6ecc58c20a3",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/376b2fe8b6f67199",
+            "Priority": "48998",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/env-config.js"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/env-config.js"
+                        ]
+                    }
+                },
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "fortune-dragon.*"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "fortune-dragon.*"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "MessageBody": "window._env_ = {\n  WS_ENDPOINT: \"wss://api.rg-lgna.com/ws\",\n  GAME_CODE: \"fortune-dragon\",\n  BASE_URL:'https://api.rg-lgna.com',\n  BET_URL: \"bets\",\n  TOTAL_BET_URL: \"total-bets\",\n};\n",
+                        "StatusCode": "200",
+                        "ContentType": "application/javascript"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/e76c0d657db8623d",
+            "Priority": "49996",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/env-config.*.js",
+                        "/env-config.js"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/env-config.*.js",
+                            "/env-config.js"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "MessageBody": "window._env_ = {\n  WS_ENDPOINT: \"wss://api.rg-lgna.com/ws\",\n  GAME_CODE: \"\",\n};\n",
+                        "StatusCode": "200",
+                        "ContentType": "application/javascript"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/3033e07c767f1df9",
+            "Priority": "49997",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "dragon-hatch.*",
+                        "fortune-mouse.*",
+                        "fortune-ox.*",
+                        "fortune-dragon.*"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "dragon-hatch.*",
+                            "fortune-mouse.*",
+                            "fortune-ox.*",
+                            "fortune-dragon.*"
+                        ]
+                    }
+                },
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/config.json"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/config.json"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "MessageBody": "{\"commonassetsURL\":\"https://common-assets-v3.rg-lgna.com\",\"envURL\":\"https://api.rg-lgna.com\"}",
+                        "StatusCode": "200",
+                        "ContentType": "application/json"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/655095b7a244ac62",
+            "Priority": "49998",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/config.json"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/config.json"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "MessageBody": "{\"commonassetsURL\":\"https://common-assets.rg-lgna.com\",\"envURL\":\"https://api.rg-lgna.com\"}",
+                        "StatusCode": "200",
+                        "ContentType": "application/json"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/8ce22caae3d8a4d7",
+            "Priority": "49999",
+            "Conditions": [
+                {
+                    "Field": "host-header",
+                    "Values": [
+                        "*.rg-lgna.com"
+                    ],
+                    "HostHeaderConfig": {
+                        "Values": [
+                            "*.rg-lgna.com"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "forward",
+                    "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-static-router/0154249043ee2ca6",
+                    "Order": 1,
+                    "ForwardConfig": {
+                        "TargetGroups": [
+                            {
+                                "TargetGroupArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:targetgroup/prod-service-static-router/0154249043ee2ca6",
+                                "Weight": 1
+                            }
+                        ],
+                        "TargetGroupStickinessConfig": {
+                            "Enabled": false
+                        }
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/aca44d2782a8e0f7",
+            "Priority": "50000",
+            "Conditions": [
+                {
+                    "Field": "path-pattern",
+                    "Values": [
+                        "/robots.txt"
+                    ],
+                    "PathPatternConfig": {
+                        "Values": [
+                            "/robots.txt"
+                        ]
+                    }
+                }
+            ],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "MessageBody": "User-agent: *\nDisallow: /",
+                        "StatusCode": "200",
+                        "ContentType": "text/plain"
+                    }
+                }
+            ],
+            "IsDefault": false
+        },
+        {
+            "RuleArn": "arn:aws:elasticloadbalancing:sa-east-1:211125478834:listener-rule/app/prod/3d78510d65d17b2c/ac06a63199cf49cf/bd61761f977e2fdd",
+            "Priority": "default",
+            "Conditions": [],
+            "Actions": [
+                {
+                    "Type": "fixed-response",
+                    "Order": 1,
+                    "FixedResponseConfig": {
+                        "MessageBody": "Not found",
+                        "StatusCode": "404",
+                        "ContentType": "text/plain"
+                    }
+                }
+            ],
+            "IsDefault": true
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+- Run this command to get all data in the avai table (the id collumn should be the first)
+SELECT id,brand_id, game_id, created, updated, logic_url, url, status, profile, feature_set_id, tags, series_profile, bundle_url, "dynamic", configs, config, logic_url_m, logic_url_s
+FROM public.available_games where brand_id ='z2j160fgggqjyjrn2a23yqn2';
+
+
+- run this func: main-modify-sql.py

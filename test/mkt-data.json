@@ -1,0 +1,122 @@
+[
+        {
+          "name": "SYSTEM_ERROR_DEBUG",
+          "value": "false"
+        },
+        {
+          "name": "PLAYER_ONLINE_EXPIRY",
+          "value": "PT2H"
+        },
+        {
+          "name": "AWS_DYNAMODB_TABLE_PLAYERATTRIBUTES",
+          "value": "mkt-eu_player_attributes"
+        },
+        {
+          "name": "SERVICE_SHARED_UI_URL",
+          "value": "https://uig.mkt.rg-lgna.com"
+        },
+        {
+          "name": "SPRING_CASSANDRA_LOCAL_DATACENTER",
+          "value": "eu-west-1"
+        },
+        {
+          "name": "FEATURES_HISTORY_IMPL",
+          "value": "cassandra"
+        },
+        {
+          "name": "JAVA_OPTS",
+          "value": "-Djava.net.preferIPv4Stack=true -XX:MaxMetaspaceSize=512m -Dspring.cloud.aws.cloudwatch.enabled=false -Dmanagement.metrics.enable.all=false -Dmanagement.tracing.enabled=false -Dmanagement.cloudwatch.metrics.export.enabled=false -XX:MaxDirectMemorySize=134217728 -Dlogging.level.com.revenge.game.features.play=OFF"
+        },
+        {
+          "name": "SPRING_CASSANDRA_CONTACT_POINTS",
+          "value": "cassandra.eu-west-1.amazonaws.com:9142"
+        },
+        {
+          "name": "SPRING_CASSANDRA_REQUEST_CONSISTENCY",
+          "value": "local_quorum"
+        },
+        {
+          "name": "SYSTEM_DEBUG_ENABLED",
+          "value": "true"
+        },
+        {
+          "name": "SPRING_DATA_REDIS_URL",
+          "value": "rediss://mkt-eu-valkey-fe3a5n.serverless.euw1.cache.amazonaws.com:6379"
+        },
+        {
+          "name": "SPRING_R2DBC_READ_URL",
+          "value": "r2dbc:pool:postgresql://mkt-eu-20241223032347040000000002.cluster-ro-ctok2ucimdyz.eu-west-1.rds.amazonaws.com:5432/service_game_client"
+        },
+        {
+          "name": "SERVICE_WEBSOCKET_ENVURL",
+          "value": "https://apig.mkt.rg-lgna.com"
+        },
+        {
+          "name": "LOGGING_LEVEL_COM_REVENGE_GAME_API",
+          "value": "INFO"
+        },
+        {
+          "name": "SYSTEM_LOGIC_VALIDATE",
+          "value": "true"
+        },
+        {
+          "name": "SERVICE_WEBSOCKET_URL",
+          "value": "wss://apig.mkt.rg-lgna.com/ws"
+        },
+        {
+          "name": "SYSTEM_LOGIC_DEBUG",
+          "value": "true"
+        },
+        {
+          "name": "SERVER_PORT",
+          "value": "9300"
+        },
+        {
+          "name": "MANAGEMENT_TRACING_SAMPLING_PROBABILITY",
+          "value": "0.1"
+        },
+        {
+          "name": "SERVICE_ENTITY_ADDRESS",
+          "value": "https://entity.revenge-games.gmkt"
+        },
+        {
+          "name": "AWS_DYNAMODB_TABLE_BETRESULTS",
+          "value": "mkt-eu_bet_results"
+        },
+        {
+          "name": "FEATURE_PLAY_LOGIC_CLIENT_DEBUG",
+          "value": "false"
+        },
+        {
+          "name": "SPRING_R2DBC_WRITE_URL",
+          "value": "r2dbc:pool:postgresql://mkt-eu-20241223032347040000000002.cluster-ctok2ucimdyz.eu-west-1.rds.amazonaws.com:5432/service_game_client"
+        },
+        {
+          "name": "FEATURE_PLAY_OPERATOR_CLIENT_DEBUG",
+          "value": "true"
+        },
+        {
+          "name": "MANAGEMENT_TRACING_ENABLED",
+          "value": "false"
+        },
+        {
+          "name": "SPRING_CASSANDRA_KEYSPACE_NAME",
+          "value": "mkt_keyspace"
+        },
+        {
+          "name": "SERVICE_GAMEREPLAY_ENDPOINT",
+          "value": "https://replay.mkt.lnga-rg.com/replay/"
+        },
+        {
+          "name": "ATTRIBUTE_DYNAMODBATTRIBUTESTABLE",
+          "value": "mkt-eu_player_attributes"
+        },
+        {
+          "name": "SERVICE_COMMON_ASSETS_URL",
+          "value": "https://rgg.rg-lgna.com/common-assets"
+        },
+        {
+          "name": "SPRING.CODEC.MAX-IN-MEMORY-SIZE",
+          "value": "20MB"
+        }
+      ]

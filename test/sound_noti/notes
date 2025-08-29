@@ -1,0 +1,6 @@
+Nâng cấp tool sound_noti.py:
+- Mỗi khi kích hoạt, chạy sound noti ít nhất 3 lần
+- nhớ là cần check lại sound noti sau khi tắt
+- Luôn mở 2 màn hình
+- dậy lúc 5h30 để check tin nhắn
+- Nếu có tiếng mà ko có tin nhắn: Cần check ở cả điện thoại hoặc chờ 1 lát để load tin nhắn (15 phút)

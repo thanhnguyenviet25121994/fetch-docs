@@ -1,0 +1,1 @@
+pattern_available_game_id = r"VALUES\('[^']+'"

@@ -1,0 +1,3 @@
+INSERT INTO public.brands
+(id, "token", code, group_id, "name", description, endpoint, status, created, updated, flags, title, logo, favicon, preferred_engine, api_key, currencies, credits, integration_mode)
+VALUES('w6q8ub4cge29p26ycdyq164k', 'uc5v25biag51z70nsy16rkj0', 'pgdemo4', 'e1vkyg83dbtejs34pncztasl', 'Pocket Game Soft Clones 4', '', 'https://operator-demo.rg-lgna.com/', 'ACTIVE', '2025-03-26 15:06:21.387', '2025-03-26 15:06:21.387', 192, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0);
